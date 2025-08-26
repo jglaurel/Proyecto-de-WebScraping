@@ -1,16 +1,18 @@
-import requests
-from bs4 import BeautifulSoup
+#%%
+import requests # para solicitudes http
+from bs4 import BeautifulSoup # escanea el codigo html y se puede sacar nodos
 import pandas as pd
 
+#%%
 # URL base
 url = "https://quotes.toscrape.com/page/{}/"
 
-# Listas para almacenar los datos
+#%% Listas para almacenar los datos
 citas = []
 autores = []
 etiqueta = []
 
-# Recorrer las primeras 10 páginas
+#%% Recorrer las primeras 10 páginas
 for paginas in range(1, 11):
     response = requests.get(url.format(paginas))
     html = BeautifulSoup(response.text, 'html.parser')
@@ -27,7 +29,7 @@ for paginas in range(1, 11):
         autores.append(autor)
         etiqueta.append(", ".join(tags))
 
-# Crear el DataFrame
+#%% Crear el DataFrame
 df = pd.DataFrame({
     "Cita": citas,
     "Autor": autores,
@@ -39,3 +41,4 @@ print(df.head(10))
 
 # Guardar en un archivo CSV
 df.to_csv("citas_scrapeadas.csv", index=False, encoding='utf-8')
+# %%
